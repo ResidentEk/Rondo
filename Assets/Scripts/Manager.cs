@@ -33,8 +33,8 @@ public class Manager : MonoBehaviour
                     RaycastHit2D hit = Physics2D.Raycast(rayOrigin, fingerPosInWorld - rayOrigin);
                     if (hit.collider != null)
                     {
-                        hit.transform.gameObject.GetComponent<PlayerController>().pokeOnCollider = true;
                         hit.transform.gameObject.GetComponent<PlayerController>().finger = tap.fingerId;
+                        hit.transform.gameObject.GetComponent<PlayerController>().pokeOnCollider = true;
                     }
                 }
             }

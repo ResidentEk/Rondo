@@ -7,8 +7,11 @@ public class PlayerController : MonoBehaviour
     public int finger;
     public bool pokeOnCollider;
     private LineRenderer line;
-    private Vector3 target;
+    private Vector3 target, fingerPos;
     private bool move;
+    public GameObject secondLineObject;
+    private SecondLine secondLineVar;
+    private int indexOfFinger;
 
     [SerializeField]
     float speed;
@@ -18,52 +21,63 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         line = GetComponent<LineRenderer>();
+        secondLineVar = secondLineObject.GetComponent<SecondLine>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        DragPlayer();
-
-        if (pokeOnCollider && Input.GetTouch(finger).phase == TouchPhase.Ended)
-        {
-            pokeOnCollider = false;
-            move = true;
-            target = Camera.main.ScreenToWorldPoint(Input.GetTouch(finger).position);
-            target.z = -1;
-        }
-
-        if (move) DrawLine(target);
+        DrawFirstLine();
+        
+        
     }
 
     private void FixedUpdate()
+    {
+        MovePlayer();
+    }
+
+    private void MovePlayer()
     {
         if (move)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.fixedDeltaTime);
             if (transform.position == target) move = false;
         }
-
     }
 
-    private void DragPlayer()
+    private void DrawFirstLine()
     {
         if (pokeOnCollider)
         {
-            DrawLine(Input.GetTouch(finger).position);
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+                if (Input.touches[i].fingerId == finger)
+                {
+                    fingerPos = Camera.main.ScreenToWorldPoint(Input.touches[i].position);
+                    indexOfFinger = i;
+                }
+            }
+
+            DrawLine(fingerPos);
+
+            if (Input.GetTouch(indexOfFinger).phase == TouchPhase.Ended)
+            {
+                pokeOnCollider = false;
+                move = true;
+                target = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
+                target.z = -1;
+            }
         }
+
+        if (move) DrawLine(target);
     }
+
     private void DrawLine(Vector3 pos)
     {
         line.SetPosition(0, new Vector3(transform.position.x, transform.position.y, -0.5f));
-
-        Vector3 tapVector3;
-
-        if (move) tapVector3 = pos;
-        else tapVector3 = Camera.main.ScreenToWorldPoint(pos);
-
-        tapVector3.z = -0.5f;
-        line.SetPosition(1, tapVector3);
+        pos.z = -0.5f;
+        line.SetPosition(1, pos);
     }
 
 
