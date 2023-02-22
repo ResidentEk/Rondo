@@ -27,9 +27,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        DrawFirstLine();
-        
-        
+        DrawLines();
     }
 
     private void FixedUpdate()
@@ -46,7 +44,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void DrawFirstLine()
+    private void DrawLines()
     {
         if (pokeOnCollider)
         {
@@ -59,7 +57,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            DrawLine(fingerPos);
+            if (!move) DrawFirstLine(fingerPos);
+            else
+            {
+                if (secondLineVar.line.enabled == false) secondLineVar.line.enabled = true;
+                DrawSecondLine(fingerPos);
+            }
 
             if (Input.GetTouch(indexOfFinger).phase == TouchPhase.Ended)
             {
@@ -67,20 +70,31 @@ public class PlayerController : MonoBehaviour
                 move = true;
                 target = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
                 target.z = -1;
+                secondLineVar.line.enabled = false;
             }
         }
 
-        if (move) DrawLine(target);
+        if (move)
+        {
+            DrawFirstLine(target);
+        }
+
     }
 
-    private void DrawLine(Vector3 pos)
+    private void DrawFirstLine(Vector3 pos)
     {
         line.SetPosition(0, new Vector3(transform.position.x, transform.position.y, -0.5f));
         pos.z = -0.5f;
         line.SetPosition(1, pos);
+
     }
 
-
+    private void DrawSecondLine(Vector3 pos)
+    {
+        secondLineVar.line.SetPosition(0, new Vector3(transform.position.x, transform.position.y, -0.5f));
+        pos.z = -0.5f;
+        secondLineVar.line.SetPosition(1, pos);
+    }
 
 
 }

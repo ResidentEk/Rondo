@@ -1159,6 +1159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 730167453}
   - component: {fileID: 730167454}
+  - component: {fileID: 730167455}
   m_Layer: 0
   m_Name: Second Line 1
   m_TagString: Untagged
@@ -1224,7 +1225,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.05
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -1277,6 +1278,19 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &730167455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730167452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a9141e5e96e6347a9b34c8eff5219d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: {fileID: 0}
 --- !u!1 &937449371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,6 +1462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1229390576}
   - component: {fileID: 1229390577}
+  - component: {fileID: 1229390578}
   m_Layer: 0
   m_Name: Second Line 5
   m_TagString: Untagged
@@ -1513,7 +1528,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.05
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -1566,6 +1581,19 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &1229390578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229390575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a9141e5e96e6347a9b34c8eff5219d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: {fileID: 0}
 --- !u!1001 &1321003543
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1960,6 +1988,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1394029553}
   - component: {fileID: 1394029554}
+  - component: {fileID: 1394029555}
   m_Layer: 0
   m_Name: Second Line 2
   m_TagString: Untagged
@@ -2025,7 +2054,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.05
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -2078,6 +2107,19 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &1394029555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394029552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a9141e5e96e6347a9b34c8eff5219d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: {fileID: 0}
 --- !u!1 &1449640442
 GameObject:
   m_ObjectHideFlags: 0
@@ -2169,6 +2211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1463850872}
   - component: {fileID: 1463850873}
+  - component: {fileID: 1463850874}
   m_Layer: 0
   m_Name: Second Line 4
   m_TagString: Untagged
@@ -2234,7 +2277,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.05
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -2287,6 +2330,19 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &1463850874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463850871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a9141e5e96e6347a9b34c8eff5219d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: {fileID: 0}
 --- !u!1001 &1712150938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2548,6 +2604,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1845649915}
   - component: {fileID: 1845649916}
+  - component: {fileID: 1845649917}
   m_Layer: 0
   m_Name: Second Line 3
   m_TagString: Untagged
@@ -2613,7 +2670,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.05
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -2666,6 +2723,19 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &1845649917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845649914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a9141e5e96e6347a9b34c8eff5219d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: {fileID: 0}
 --- !u!1001 &2005380575
 PrefabInstance:
   m_ObjectHideFlags: 0
