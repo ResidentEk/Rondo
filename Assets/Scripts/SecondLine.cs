@@ -12,9 +12,4 @@ public class SecondLine : MonoBehaviour
         line = GetComponent<LineRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    
+    private BallController ballScript;
+    private Vector3 fingerPosInWorld, rayOrigin;
+    private RaycastHit2D hit;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        ballScript = GameObject.Find("Ball").GetComponent<BallController>();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        CheckWhichPlayerTap();
-    }
-
-    void CheckWhichPlayerTap()
     {
         if (Input.touchCount > 0)
         {
@@ -26,18 +23,32 @@ public class Manager : MonoBehaviour
             {
                 if (tap.phase == TouchPhase.Began)
                 {
-                    Vector3 fingerPosInWorld = Camera.main.ScreenToWorldPoint(tap.position);
-                    fingerPosInWorld.z = -1;
-                    Vector3 rayOrigin = fingerPosInWorld;
-                    rayOrigin.z = -5;
-                    RaycastHit2D hit = Physics2D.Raycast(rayOrigin, fingerPosInWorld - rayOrigin);
+                    RaycastShoot(tap);
+                    
                     if (hit.collider != null)
                     {
                         hit.transform.gameObject.GetComponent<PlayerController>().finger = tap.fingerId;
                         hit.transform.gameObject.GetComponent<PlayerController>().pokeOnCollider = true;
+                        if (ballScript.owner != null) ballScript.passOrMove = true;
+                    }
+
+                    if (ballScript.owner != null && !ballScript.trajectory)
+                    {
+                        ballScript.finger = tap.fingerId;
+                        ballScript.trajectory = true;
                     }
                 }
             }
         }
     }
+
+    private void RaycastShoot(Touch tap)
+    {
+        fingerPosInWorld = Camera.main.ScreenToWorldPoint(tap.position);
+        fingerPosInWorld.z = 0;
+        rayOrigin = fingerPosInWorld;
+        rayOrigin.z = -5;
+        hit = Physics2D.Raycast(rayOrigin, fingerPosInWorld - rayOrigin);
+    }
+
 }
