@@ -8,15 +8,17 @@ public class BallController : MonoBehaviour
     private Collider2D col;
     private LineRenderer line;
     public int finger, indexOfFinger;
-    public bool trajectory;
-    private Vector3 fingerPos, target, fingerPosInWorld, rayOrigin;
-    private bool move;
+    public bool trajectory, passOrMove;
+    private Vector3 target, fingerPos;
+    private bool move, outOfBounds;
     private GameObject lastOwner;
-    public bool passOrMove;
     private RaycastHit2D hit;
+    private Vector2 hitPoint;
 
     [SerializeField]
     float speed;
+    [SerializeField]
+    private LayerMask mask;
 
     void Start()
     {
@@ -30,7 +32,25 @@ public class BallController : MonoBehaviour
         {
             transform.position = new Vector3(owner.transform.position.x, owner.transform.position.y, transform.position.z);
 
-            if (trajectory && Input.touchCount > 0) DrawTrajectory();
+            if (trajectory && Input.touchCount > 0)
+            {
+                DefineFinger();
+                if (line.enabled == false) line.enabled = true;
+                if (Input.GetTouch(indexOfFinger).phase == TouchPhase.Ended) TouchEnded();
+
+                hit = Physics2D.Linecast(transform.position, fingerPos, mask);
+                if (hit.collider != null)
+                {
+                    outOfBounds = true;
+                    DrawLine(hit.point);
+                    hitPoint = hit.point;
+                }
+                else
+                {
+                    DrawLine(fingerPos);
+                    outOfBounds = false;
+                }
+            }
 
             if (passOrMove && Input.touchCount > 0) DefinePassOrMove();
         }
@@ -38,17 +58,6 @@ public class BallController : MonoBehaviour
         if (move) DrawLine(target);
     }
 
-    private void DrawTrajectory()
-    {
-        DefineFinger();
-
-        if (line.enabled == false) line.enabled = true;
-
-        DrawLine(fingerPos);
-
-        if (Input.GetTouch(indexOfFinger).phase == TouchPhase.Ended) TouchEnded();
-
-    }
 
     private void DefineFinger()
     {
@@ -76,7 +85,12 @@ public class BallController : MonoBehaviour
         owner = null;
         move = true;
         trajectory = false;
-        target = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
+        if (outOfBounds)
+        {
+            target = hitPoint;
+            outOfBounds = false;
+        }
+        else target = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
         target.z = -2;
     }
 
@@ -98,14 +112,9 @@ public class BallController : MonoBehaviour
 
     private void RaycastShoot()
     {
-        fingerPosInWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
-        fingerPosInWorld.z = 0;
-        rayOrigin = fingerPosInWorld;
-        rayOrigin.z = -5;
-        hit = Physics2D.Raycast(rayOrigin, fingerPosInWorld - rayOrigin);
+        fingerPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
+        hit = Physics2D.Raycast(fingerPos, Vector3.forward);
     }
-
-
 
     private void FixedUpdate()
     {

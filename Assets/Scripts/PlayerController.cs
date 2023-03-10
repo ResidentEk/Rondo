@@ -8,22 +8,25 @@ public class PlayerController : MonoBehaviour
     public bool pokeOnCollider;
     private LineRenderer line;
     private Vector3 target, fingerPos;
-    private bool move;
+    private bool move, outOfBounds;
     public GameObject secondLineObject, bumpCollision;
-    private BallController ballScript;
-    private SecondLine secondLineVar;
+    private BallController ball;
+    private SecondLine secondLine;
     private int indexOfFinger;
     private RaycastHit2D hit;
-    private Vector3 fingerPosInWorld, rayOrigin;
+    private Vector2 hitPoint;
 
     [SerializeField]
-    float speed;
+    private float speed;
+    [SerializeField]
+    private LayerMask mask;
+
 
     void Start()
     {
         line = GetComponent<LineRenderer>();
-        secondLineVar = secondLineObject.GetComponent<SecondLine>();
-        ballScript = GameObject.Find("Ball").GetComponent<BallController>();
+        secondLine = secondLineObject.GetComponent<SecondLine>();
+        ball = GameObject.Find("Ball").GetComponent<BallController>();
     }
 
     private void Update()
@@ -32,11 +35,11 @@ public class PlayerController : MonoBehaviour
         {
             DefineFinger();
 
-            if (!move) DrawLine(fingerPos, line);
+            if (!move) LinecastShoot(line);
             else
             {
-                if (secondLineVar.line.enabled == false) secondLineVar.line.enabled = true;
-                DrawLine(fingerPos, secondLineVar.line);
+                if (secondLine.line.enabled == false) secondLine.line.enabled = true;
+                LinecastShoot(secondLine.line);
             }
 
             FingerPhaseEnded();
@@ -44,6 +47,8 @@ public class PlayerController : MonoBehaviour
 
         if (move) DrawLine(target, line);
     }
+
+
 
     private void FixedUpdate()
     {
@@ -53,40 +58,50 @@ public class PlayerController : MonoBehaviour
             if (transform.position == target)
             {
                 move = false;
-                secondLineVar.line.enabled = false;
+                secondLine.line.enabled = false;
             }
         }
+
+    }
+
+    private void LinecastShoot(LineRenderer segment)
+    {
+        hit = Physics2D.Linecast(transform.position, fingerPos, mask);
+        if (hit.collider != null)
+        {
+            DrawLine(hit.point, segment);
+            hitPoint = hit.point;
+            outOfBounds = true;
+        }
+        else
+        {
+            DrawLine(fingerPos, segment);
+            outOfBounds = false;
+        }
+
     }
 
     private void FingerPhaseEnded()
     {
         if (Input.touchCount > 0 && Input.GetTouch(indexOfFinger).phase == TouchPhase.Ended)
         {
-            RaycastShoot();
+            hit = Physics2D.Raycast(fingerPos, Vector3.forward);
 
-            if (hit.collider != null && hit.collider.gameObject == this.gameObject)
+            if (hit.collider != null && hit.collider.gameObject != this.gameObject || hit.collider == null)
             {
-                pokeOnCollider = false;
-                secondLineVar.line.enabled = false;
-            }
-            else
-            {
-                pokeOnCollider = false;
                 move = true;
-                target = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
+                if (outOfBounds)
+                {
+                    target = hitPoint;
+                    outOfBounds = false;
+                }
+                else target = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
                 target.z = -1;
-                secondLineVar.line.enabled = false;
             }
-        }
-    }
 
-    private void RaycastShoot()
-    {
-        fingerPosInWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
-        fingerPosInWorld.z = 0;
-        rayOrigin = fingerPosInWorld;
-        rayOrigin.z = -5;
-        hit = Physics2D.Raycast(rayOrigin, fingerPosInWorld - rayOrigin);
+            secondLine.line.enabled = false;
+            pokeOnCollider = false;
+        }
     }
 
     private void DefineFinger()
@@ -102,15 +117,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void DrawLine(Vector3 pos, LineRenderer direction)
+    private void DrawLine(Vector3 pos, LineRenderer objectDraw)
     {
-        direction.SetPosition(0, new Vector3(transform.position.x, transform.position.y, -0.5f));
-        direction.SetPosition(1, new Vector3(pos.x, pos.y, -0.5f));
+        objectDraw.SetPosition(0, new Vector3(transform.position.x, transform.position.y, -0.5f));
+        objectDraw.SetPosition(1, new Vector3(pos.x, pos.y, -0.5f));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (ballScript.owner == this.gameObject)
+        if (ball.owner == this.gameObject && collision.gameObject.name != "Border")
         {
             bumpCollision = collision.gameObject;
             StartCoroutine(TakeDealy());
@@ -120,7 +135,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator TakeDealy()
     {
         yield return null;
-        ballScript.owner = bumpCollision;
+        ball.owner = bumpCollision;
     }
 }
 
