@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (ball.owner == this.gameObject && collision.gameObject.name != "Border")
+        if (ball.owner == this.gameObject && collision.gameObject.name != "Border" && collision.gameObject.tag != this.gameObject.tag)
         {
             bumpCollision = collision.gameObject;
             StartCoroutine(TakeDealy());

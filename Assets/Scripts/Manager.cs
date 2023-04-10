@@ -32,7 +32,7 @@ public class Manager : MonoBehaviour
                         if (ball.owner != null) ball.passOrMove = true;
                     }
 
-                    if (ball.owner != null && !ball.trajectory)
+                    if (ball.owner != null && !ball.trajectory && ball.owner.CompareTag("Blue"))
                     {
                         ball.finger = tap.fingerId;
                         ball.trajectory = true;

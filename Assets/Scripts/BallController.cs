@@ -5,15 +5,16 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     public GameObject owner;
-    private Collider2D col;
+    public Collider2D col;
     private LineRenderer line;
     public int finger, indexOfFinger;
     public bool trajectory, passOrMove;
-    private Vector3 target, fingerPos;
-    private bool move, outOfBounds;
-    private GameObject lastOwner;
+    public Vector3 target, fingerPos;
+    public bool move, outOfBounds;
+    public GameObject lastOwner;
     private RaycastHit2D hit;
     private Vector2 hitPoint;
+    public bool possession;
 
     [SerializeField]
     float speed;
@@ -24,10 +25,15 @@ public class BallController : MonoBehaviour
     {
         col = GetComponent<Collider2D>();
         line = GetComponent<LineRenderer>();
+        possession = true;
     }
 
     void Update()
     {
+        if (owner != null && owner.CompareTag("Blue")) possession = true;
+        else if (owner != null && owner.CompareTag("Red")) possession = false;
+        else if(!move) possession = true; 
+
         if (owner != null)
         {
             transform.position = new Vector3(owner.transform.position.x, owner.transform.position.y, transform.position.z);
@@ -105,9 +111,6 @@ public class BallController : MonoBehaviour
             line.enabled = false;
         }
     }
-
-
-
 
 
     private void RaycastShoot()
