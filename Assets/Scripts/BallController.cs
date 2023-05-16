@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class BallController : MonoBehaviour
 {
@@ -15,6 +18,10 @@ public class BallController : MonoBehaviour
     private RaycastHit2D hit;
     private Vector2 hitPoint;
     public bool possession;
+    public GameObject blueGameObject, redGameObject;
+    private TextMeshProUGUI blueText, redText;
+    private static int blueScore = 0, redScore = 0;
+    private bool goal;
 
     [SerializeField]
     float speed;
@@ -26,13 +33,37 @@ public class BallController : MonoBehaviour
         col = GetComponent<Collider2D>();
         line = GetComponent<LineRenderer>();
         possession = true;
+        blueText = blueGameObject.GetComponent<TextMeshProUGUI>();
+        redText = redGameObject.GetComponent<TextMeshProUGUI>();
+        blueText.text = blueScore.ToString();
+        redText.text = redScore.ToString();
     }
 
     void Update()
     {
         if (owner != null && owner.CompareTag("Blue")) possession = true;
         else if (owner != null && owner.CompareTag("Red")) possession = false;
-        else if(!move) possession = true; 
+        else if (!move) possession = true;
+
+        if (transform.position.x < -7.9f && !goal)
+        {
+            Invoke("RestartScene", 2);
+            blueScore = int.Parse(blueText.text);
+            blueScore++;
+            blueText.text = blueScore.ToString();
+            goal = true;
+        }
+
+        else if (transform.position.x > 7.26 && !goal)
+        {
+            Invoke("RestartScene", 2);
+            redScore = int.Parse(redText.text);
+            redScore++;
+            redText.text = redScore.ToString();
+            goal = true;
+        }
+
+
 
         if (owner != null)
         {
@@ -64,6 +95,10 @@ public class BallController : MonoBehaviour
         if (move) DrawLine(target);
     }
 
+    private void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
     private void DefineFinger()
     {
