@@ -46,7 +46,7 @@ public class Keeper : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, target, enemyScript.speed * Time.fixedDeltaTime);
         }
         else DecideWhenToPass();
-      
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -83,9 +83,11 @@ public class Keeper : MonoBehaviour
             if (enemiesToPass.Count > 0)
             {
                 enemyScript.randomNumber = Random.Range(0, enemiesToPass.Count);
-                enemyScript.MoveTheBall(enemiesToPass[(int)enemyScript.randomNumber].transform.position, this.gameObject);
+                target = enemiesToPass[(int)enemyScript.randomNumber].transform.position;
+                target.z = -2;
+                enemyScript.MoveTheBall(target, this.gameObject);
                 enemiesToPass.Clear();
-            }           
+            }
         }
     }
 }

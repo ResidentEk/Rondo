@@ -9,14 +9,13 @@ public class EnemyManager : MonoBehaviour
     public GameObject[] enemyObject, playerObject;
     private BallController ball;
     public float speed;
-    private float[] distances, distancesToOwner, coord;
+    private float[] distances, distancesToOwner;
     private float min, radius;
     public float randomNumber;
     private int indexOfEnemy, indexOfPlayer;
-    private Vector3 direction, goalTarget, specialCoord, target;
+    private Vector3 direction, goalTarget, coord, target;
     private RaycastHit2D hit;
     [SerializeField] private LayerMask mask;
-    private List<GameObject> enemyInOrder;
     [SerializeField] private float distanceToPlayer;
     private Vector2[] directions;
     private List<GameObject> enemiesToPass;
@@ -29,9 +28,7 @@ public class EnemyManager : MonoBehaviour
         ball = GameObject.Find("Ball").GetComponent<BallController>();
         distances = new float[4];
         distancesToOwner = new float[5];
-        coord = new float[4];
         goalTarget = new Vector3(7.9f, 0, -2);
-        enemyInOrder = new List<GameObject>();
         directions = new Vector2[4];
         enemiesToPass = new List<GameObject>();
     }
@@ -39,7 +36,7 @@ public class EnemyManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GetCloserToBallEnemy();
+        if (ball.owner == null || (ball.owner != null && ball.owner.CompareTag("Blue"))) GetCloserToBallEnemy();
 
         if (ball.possession) MovingWhenFree();
         else MovingWhenOwns();
@@ -58,9 +55,8 @@ public class EnemyManager : MonoBehaviour
 
                 if (enemyObject[i].transform.position.x > hitLimit)
                 {
-                    specialCoord = goalTarget;
-                    specialCoord.z = -1;
-                    hit = Physics2D.Linecast(enemyObject[i].transform.position, specialCoord, mask);
+                    coord = goalTarget;
+                    hit = Physics2D.Linecast(enemyObject[i].transform.position, coord, mask);
                     if (hit.collider == null) MoveTheBall(goalTarget, enemyObject[i]);
                 }
 
@@ -89,9 +85,11 @@ public class EnemyManager : MonoBehaviour
             if (enemiesToPass.Count > 0)
             {
                 randomNumber = Random.Range(0, enemiesToPass.Count);
-                MoveTheBall(enemiesToPass[(int)randomNumber].transform.position, enemyObject[index]);
+                coord = enemiesToPass[(int)randomNumber].transform.position;
+                coord.z = -2;
+                MoveTheBall(coord, enemyObject[index]);
                 enemiesToPass.Clear();
-            }           
+            }
         }
     }
 
@@ -107,10 +105,10 @@ public class EnemyManager : MonoBehaviour
 
     private void MovingFreeEnemiesWhenOwns(int index)
     {
-        specialCoord = ball.transform.position;
-        specialCoord.z = -1;
+        coord = ball.transform.position;
+        coord.z = -1;
 
-        hit = Physics2D.Linecast(enemyObject[index].transform.position, specialCoord, mask);
+        hit = Physics2D.Linecast(enemyObject[index].transform.position, coord, mask);
         if (hit.collider != null) MoveCircleTrajectory(enemyObject[index], index);
         else MovingEnemyWithoutBall(index);
     }
@@ -143,18 +141,18 @@ public class EnemyManager : MonoBehaviour
         randomNumber = Random.Range(0, movingRandom);
         if (randomNumber == 0)
         {
-            radius = Vector3.Distance(unit.transform.position, specialCoord);
+            radius = Vector3.Distance(unit.transform.position, coord);
 
             randomNumber = Random.Range(0, 2);
             if (randomNumber == 0)
             {
-                directions[index].x = -(specialCoord.y - unit.transform.position.y) / radius;
-                directions[index].y = (specialCoord.x - unit.transform.position.x) / radius;
+                directions[index].x = -(coord.y - unit.transform.position.y) / radius;
+                directions[index].y = (coord.x - unit.transform.position.x) / radius;
             }
             else
             {
-                directions[index].x = (specialCoord.y - unit.transform.position.y) / radius;
-                directions[index].y = -(specialCoord.x - unit.transform.position.x) / radius;
+                directions[index].x = (coord.y - unit.transform.position.y) / radius;
+                directions[index].y = -(coord.x - unit.transform.position.x) / radius;
             }
         }
 
@@ -193,10 +191,10 @@ public class EnemyManager : MonoBehaviour
     {
         for (int i = 0; i < distances.Length; i++)
         {
-            specialCoord = ball.transform.position;
-            specialCoord.z = -1;
+            coord = ball.transform.position;
+            coord.z = -1;
 
-            distances[i] = Vector3.Magnitude(enemyObject[i].transform.position - specialCoord);
+            distances[i] = Vector3.Magnitude(enemyObject[i].transform.position - coord);
         }
 
         min = distances[0];
@@ -211,10 +209,10 @@ public class EnemyManager : MonoBehaviour
 
     private void MovingWhenFree()
     {
-        specialCoord = ball.transform.position;
-        specialCoord.z = -1;
+        coord = ball.transform.position;
+        coord.z = -1;
 
-        enemyObject[indexOfEnemy].transform.position = Vector3.MoveTowards(enemyObject[indexOfEnemy].transform.position, specialCoord, speed * Time.fixedDeltaTime);
+        enemyObject[indexOfEnemy].transform.position = Vector3.MoveTowards(enemyObject[indexOfEnemy].transform.position, coord, speed * Time.fixedDeltaTime);
 
         for (int i = 0; i < enemyObject.Length; i++)
         {
