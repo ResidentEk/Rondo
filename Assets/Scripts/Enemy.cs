@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (ball.owner == this.gameObject && collision.gameObject.name != "Border" && collision.gameObject.tag != this.gameObject.tag)
+        if (ball.owner == this.gameObject && collision.gameObject.CompareTag("Blue"))
         {
             bumpCollision = collision.gameObject;
             StartCoroutine(TakeDealy());
@@ -25,5 +25,8 @@ public class Enemy : MonoBehaviour
     {
         yield return null;
         ball.owner = bumpCollision;
+
+        if (ball.owner.CompareTag("Blue")) ball.possession = true;
+        else ball.possession = false;
     }
 }

@@ -7,30 +7,39 @@ using Random = UnityEngine.Random;
 public class EnemyManager : MonoBehaviour
 {
     public GameObject[] enemyObject, playerObject;
-    private BallController ball;
+    public BallController ball;
     public float speed;
-    private float[] distances, distancesToOwner;
-    private float min, radius;
+    private float min, rotationDirection, angle;
     public float randomNumber;
-    private int indexOfEnemy, indexOfPlayer;
-    private Vector3 direction, goalTarget, coord, target;
+    private Vector3 goalTarget, target;
     private RaycastHit2D hit;
     [SerializeField] private LayerMask mask;
     [SerializeField] private float distanceToPlayer;
-    private Vector2[] directions;
     private List<GameObject> enemiesToPass;
+    private Dictionary<GameObject, float> distanceBallEnemy = new Dictionary<GameObject, float>();
+    private Dictionary<GameObject, float> distanceOwnerPlayer = new Dictionary<GameObject, float>();
+    private Dictionary<GameObject, Vector2> directions = new Dictionary<GameObject, Vector2>();
+    private GameObject closerToBallEnemy, closerToOwnerPlayer;
 
     public int passRandom, movingRandom;
     [SerializeField] private float movingLimit, hitLimit;
 
     void Start()
     {
-        ball = GameObject.Find("Ball").GetComponent<BallController>();
-        distances = new float[4];
-        distancesToOwner = new float[5];
         goalTarget = new Vector3(7.9f, 0, -2);
-        directions = new Vector2[4];
         enemiesToPass = new List<GameObject>();
+        rotationDirection = 1;
+
+        for (int i = 1; i < 5; i++)
+        {
+            distanceBallEnemy.Add(GameObject.Find("Red team").transform.GetChild(i).gameObject, 0);
+            directions.Add(GameObject.Find("Red team").transform.GetChild(i).gameObject, new Vector2(0, 0));
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            distanceOwnerPlayer.Add(GameObject.Find("Blue team").transform.GetChild(i).gameObject, 0);
+        }
     }
 
 
@@ -44,40 +53,37 @@ public class EnemyManager : MonoBehaviour
 
     private void MovingWhenOwns()
     {
-        for (int i = 0; i < enemyObject.Length; i++)
+        foreach (GameObject enemy in enemyObject)
         {
-            if (enemyObject[i] != ball.owner) MovingFreeEnemiesWhenOwns(i);
+            if (enemy != ball.owner) MovingFreeEnemiesWhenPosession(enemy);
             else
             {
-                GetCloserToOwnerPlayer();
-                DecideIfOwnerNearPlayer(i);
-                DecideWhenToPass(i);
-
-                if (enemyObject[i].transform.position.x > hitLimit)
+                if (enemy.transform.position.x > hitLimit)
                 {
-                    coord = goalTarget;
-                    hit = Physics2D.Linecast(enemyObject[i].transform.position, coord, mask);
-                    if (hit.collider == null) MoveTheBall(goalTarget, enemyObject[i]);
+                    hit = Physics2D.Linecast(enemy.transform.position, goalTarget, mask);
+                    if (hit.collider == null) MoveTheBall(goalTarget, enemy);
                 }
 
-
+                GetCloserToOwnerPlayer(enemy);
+                DecideIfOwnerNearPlayer(enemy);
+                DecideWhenToPass(enemy);
             }
         }
     }
 
-    private void DecideWhenToPass(int index)
+    public void DecideWhenToPass(GameObject enemyOwner)
     {
         randomNumber = Random.Range(0, passRandom);
         if (randomNumber == 0)
         {
-            foreach (GameObject item in enemyObject)
+            foreach (GameObject unit in enemyObject)
             {
-                if (item != enemyObject[index])
+                if (unit != enemyOwner)
                 {
-                    hit = Physics2D.Linecast(enemyObject[index].transform.position, item.transform.position, mask);
+                    hit = Physics2D.Linecast(unit.transform.position, enemyOwner.transform.position, mask);
                     if (hit.collider == null)
                     {
-                        enemiesToPass.Add(item);
+                        enemiesToPass.Add(unit);
                     }
                 }
             }
@@ -85,84 +91,72 @@ public class EnemyManager : MonoBehaviour
             if (enemiesToPass.Count > 0)
             {
                 randomNumber = Random.Range(0, enemiesToPass.Count);
-                coord = enemiesToPass[(int)randomNumber].transform.position;
-                coord.z = -2;
-                MoveTheBall(coord, enemyObject[index]);
+                target = enemiesToPass[(int)randomNumber].transform.position;
+                target.z = -2;
                 enemiesToPass.Clear();
+                MoveTheBall(target, enemyOwner);
             }
         }
     }
 
-    private void DecideIfOwnerNearPlayer(int index)
+    private void DecideIfOwnerNearPlayer(GameObject enemy)
     {
-        if (distancesToOwner[indexOfPlayer] < 1)
+        if (Vector2.Distance(closerToOwnerPlayer.transform.position, enemy.transform.position) < 1)
         {
-            direction = enemyObject[index].transform.position - playerObject[indexOfPlayer].transform.position;
-            enemyObject[index].transform.Translate(direction.normalized * speed * Time.fixedDeltaTime);
+            directions[enemy] = enemy.transform.position - closerToOwnerPlayer.transform.position;
+            enemy.transform.Translate(directions[enemy].normalized * speed * Time.fixedDeltaTime);
         }
-        else MovingEnemyWithoutBall(index);
+        else MovingEnemyWhenPosession(enemy);
     }
 
-    private void MovingFreeEnemiesWhenOwns(int index)
+    private void MovingFreeEnemiesWhenPosession(GameObject enemy)
     {
-        coord = ball.transform.position;
-        coord.z = -1;
-
-        hit = Physics2D.Linecast(enemyObject[index].transform.position, coord, mask);
-        if (hit.collider != null) MoveCircleTrajectory(enemyObject[index], index);
-        else MovingEnemyWithoutBall(index);
+        hit = Physics2D.Linecast(enemy.transform.position, ball.transform.position, mask);
+        if (hit.collider != null) MoveCircleTrajectory(enemy);
+        else MovingEnemyWhenPosession(enemy);
     }
 
-    private void MovingEnemyWithoutBall(int index)
+    private void MovingEnemyWhenPosession(GameObject enemy)
     {
         randomNumber = Random.Range(0, movingRandom);
         if (randomNumber == 0)
         {
-            if (enemyObject[index].transform.position.x < movingLimit)
+            if (enemy.transform.position.x < movingLimit)
             {
-                directions[index].x = 1;
+                randomNumber = Random.Range(-10, 10) / 10f;
+                directions[enemy] = new Vector2(1, randomNumber);
             }
             else
             {
-                randomNumber = Random.Range(-100, 100);
-                randomNumber /= 100;
-                directions[index].x = randomNumber;
-            }
+                randomNumber = Random.Range(-10, 10) / 10f;
+                directions[enemy] = new Vector2(randomNumber, 0);
 
-            randomNumber = Random.Range(-100, 100);
-            randomNumber /= 100;
-            directions[index].y = randomNumber;
+                randomNumber = Random.Range(-10, 10) / 10f;
+                directions[enemy] += new Vector2(0, randomNumber);
+            }
         }
-        enemyObject[index].transform.Translate(directions[index].normalized * speed * Time.fixedDeltaTime);
+
+        enemy.transform.Translate(directions[enemy].normalized * speed * Time.fixedDeltaTime);
     }
 
-    private void MoveCircleTrajectory(GameObject unit, int index)
+    private void MoveCircleTrajectory(GameObject enemy)
     {
         randomNumber = Random.Range(0, movingRandom);
         if (randomNumber == 0)
         {
-            radius = Vector3.Distance(unit.transform.position, coord);
-
             randomNumber = Random.Range(0, 2);
-            if (randomNumber == 0)
-            {
-                directions[index].x = -(coord.y - unit.transform.position.y) / radius;
-                directions[index].y = (coord.x - unit.transform.position.x) / radius;
-            }
-            else
-            {
-                directions[index].x = (coord.y - unit.transform.position.y) / radius;
-                directions[index].y = -(coord.x - unit.transform.position.x) / radius;
-            }
+            if (randomNumber == 0) rotationDirection = 1;
+            else rotationDirection = -1;
+
+            angle = speed * Time.fixedDeltaTime * rotationDirection / Vector3.Distance(enemy.transform.position, ball.transform.position);
+            angle *= 180 / 3.14f;
         }
-
-        unit.transform.Translate(directions[index] * speed * Time.fixedDeltaTime);
-
+        enemy.transform.RotateAround(ball.transform.position, Vector3.forward, angle);
     }
 
-    public void MoveTheBall(Vector3 aim, GameObject hero)
+    public void MoveTheBall(Vector3 aim, GameObject lastOwner)
     {
-        ball.lastOwner = hero;
+        ball.lastOwner = lastOwner;
         ball.col.enabled = true;
         ball.owner = null;
         ball.move = true;
@@ -170,53 +164,44 @@ public class EnemyManager : MonoBehaviour
         ball.target = aim;
     }
 
-    private void GetCloserToOwnerPlayer()
+    private void GetCloserToOwnerPlayer(GameObject enemy)
     {
-        for (int i = 0; i < distancesToOwner.Length; i++)
+        min = 20;
+        foreach (GameObject item in playerObject)
         {
-            distancesToOwner[i] = Vector3.Magnitude(playerObject[i].transform.position - ball.owner.transform.position);
+            distanceOwnerPlayer[item] = Vector3.Magnitude(item.transform.position - enemy.transform.position);
+            if (distanceOwnerPlayer[item] < min)
+            {
+                min = distanceOwnerPlayer[item];
+                closerToOwnerPlayer = item;
+            }
         }
-
-        min = distancesToOwner[0];
-
-        foreach (float item in distancesToOwner)
-        {
-            if (item < min) min = item;
-        }
-
-        indexOfPlayer = (int)Array.IndexOf(distancesToOwner, min);
     }
 
     private void GetCloserToBallEnemy()
     {
-        for (int i = 0; i < distances.Length; i++)
+        min = 20;
+        foreach (GameObject item in enemyObject)
         {
-            coord = ball.transform.position;
-            coord.z = -1;
-
-            distances[i] = Vector3.Magnitude(enemyObject[i].transform.position - coord);
+            distanceBallEnemy[item] = Vector3.Magnitude(item.transform.position - ball.transform.position);
+            if (distanceBallEnemy[item] < min)
+            {
+                min = distanceBallEnemy[item];
+                closerToBallEnemy = item;
+            }
         }
-
-        min = distances[0];
-
-        foreach (float item in distances)
-        {
-            if (item < min) min = item;
-        }
-
-        indexOfEnemy = (int)Array.IndexOf(distances, min);
     }
 
     private void MovingWhenFree()
     {
-        coord = ball.transform.position;
-        coord.z = -1;
+        target = ball.transform.position;
+        target.z = -1;
 
-        enemyObject[indexOfEnemy].transform.position = Vector3.MoveTowards(enemyObject[indexOfEnemy].transform.position, coord, speed * Time.fixedDeltaTime);
+        closerToBallEnemy.transform.position = Vector3.MoveTowards(closerToBallEnemy.transform.position, target, speed * Time.fixedDeltaTime);
 
         for (int i = 0; i < enemyObject.Length; i++)
         {
-            if (i != indexOfEnemy)
+            if (enemyObject[i] != closerToBallEnemy)
             {
                 target = playerObject[i].transform.position;
                 target.x -= distanceToPlayer;

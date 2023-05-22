@@ -136,6 +136,9 @@ public class PlayerController : MonoBehaviour
     {
         yield return null;
         ball.owner = bumpCollision;
+
+        if (ball.owner.CompareTag("Blue")) ball.possession = true;
+        else ball.possession = false;
     }
 }
 

@@ -900,12 +900,12 @@ PrefabInstance:
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.47
+      value: 1.93
       objectReference: {fileID: 0}
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.51
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
@@ -1401,7 +1401,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799471933}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.68, y: 0.01, z: -2}
+  m_LocalPosition: {x: 5.84, y: 0.07, z: -2}
   m_LocalScale: {x: 0.015007597, y: 0.015007597, z: 0.015007597}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3289,12 +3289,12 @@ PrefabInstance:
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.59
+      value: -4.84
       objectReference: {fileID: 0}
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.79
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
@@ -3753,11 +3753,12 @@ MonoBehaviour:
   - {fileID: 1321003544}
   - {fileID: 2005380576}
   - {fileID: 1712150939}
+  ball: {fileID: 799471934}
   speed: 0.3
   randomNumber: 0
   mask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 512
   distanceToPlayer: 1.5
   passRandom: 50
   movingRandom: 70
@@ -4105,12 +4106,12 @@ PrefabInstance:
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.22
+      value: 1.87
       objectReference: {fileID: 0}
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.97
+      value: 0.26
       objectReference: {fileID: 0}
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
@@ -4332,7 +4333,7 @@ PrefabInstance:
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,
         type: 3}
@@ -4447,9 +4448,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bumpCollision: {fileID: 0}
-  mask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!4 &6807947084607272930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6956322988363924367, guid: 732d3178f018c7d41ab62570678f1cf3,

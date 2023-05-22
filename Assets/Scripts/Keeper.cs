@@ -8,50 +8,37 @@ public class Keeper : MonoBehaviour
     private EnemyManager enemyScript;
     private Vector3 target;
     public GameObject bumpCollision;
-    private RaycastHit2D hit;
-    [SerializeField] private LayerMask mask;
-    private List<GameObject> enemiesToPass;
 
     void Start()
     {
         ball = GameObject.Find("Ball").GetComponent<BallController>();
         enemyScript = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
-        enemiesToPass = new List<GameObject>();
-    }
-
-
-    void Update()
-    {
-
     }
 
     private void FixedUpdate()
     {
         if (ball.owner != this.gameObject)
         {
-            target = ball.target;
-            target.x = transform.position.x;
-            target.z = -1;
-
+            target = transform.position;
             if (ball.move)
             {
-                if (ball.target.y > 0.6f) target.y = 0.6f;
-                else if (ball.target.y > 0.6f) target.y = 0.6f;
+                if (ball.target.y > 0.8f) target.y = 0.8f;
+                else if (ball.target.y < -0.8f) target.y = -0.8f;
+                else target.y = ball.target.y;
             }
             else
             {
-                if (ball.transform.position.y > 0.6f) target.y = 0.6f;
-                else if (ball.transform.position.y < -0.6f) target.y = -0.6f;
+                if (ball.transform.position.y > 0.8f) target.y = 0.8f;
+                else if (ball.transform.position.y < -0.8f) target.y = -0.8f;
             }
             transform.position = Vector3.MoveTowards(transform.position, target, enemyScript.speed * Time.fixedDeltaTime);
         }
-        else DecideWhenToPass();
-
+        else enemyScript.DecideWhenToPass(this.gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (ball.owner == this.gameObject && collision.gameObject.name != "Border" && collision.gameObject.tag != this.gameObject.tag)
+        if (ball.owner == this.gameObject && collision.gameObject.CompareTag("Blue"))
         {
             bumpCollision = collision.gameObject;
             StartCoroutine(TakeDealy());
@@ -64,30 +51,4 @@ public class Keeper : MonoBehaviour
         ball.owner = bumpCollision;
     }
 
-
-    private void DecideWhenToPass()
-    {
-        enemyScript.randomNumber = Random.Range(0, enemyScript.passRandom);
-        if (enemyScript.randomNumber == 0)
-        {
-            foreach (GameObject item in enemyScript.enemyObject)
-            {
-                hit = Physics2D.Linecast(transform.position, item.transform.position, mask);
-                if (hit.collider == null)
-                {
-                    enemiesToPass.Add(item);
-                }
-
-            }
-
-            if (enemiesToPass.Count > 0)
-            {
-                enemyScript.randomNumber = Random.Range(0, enemiesToPass.Count);
-                target = enemiesToPass[(int)enemyScript.randomNumber].transform.position;
-                target.z = -2;
-                enemyScript.MoveTheBall(target, this.gameObject);
-                enemiesToPass.Clear();
-            }
-        }
-    }
 }

@@ -41,9 +41,6 @@ public class BallController : MonoBehaviour
 
     void Update()
     {
-        if (owner != null && owner.CompareTag("Blue")) possession = true;
-        else if (owner != null && owner.CompareTag("Red")) possession = false;
-        else if (!move) possession = true;
 
         if (transform.position.x < -7.9f && !goal)
         {
@@ -162,6 +159,7 @@ public class BallController : MonoBehaviour
             if (transform.position == target)
             {
                 move = false;
+                possession = true;
             }
         }
     }
@@ -174,6 +172,9 @@ public class BallController : MonoBehaviour
             owner = collision.gameObject;
             line.enabled = false;
             move = false;
+
+            if (collision.gameObject.CompareTag("Blue")) possession = true;
+            else possession = false;
         }
     }
 
