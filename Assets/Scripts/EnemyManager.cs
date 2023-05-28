@@ -9,26 +9,38 @@ public class EnemyManager : MonoBehaviour
     public GameObject[] enemyObject, playerObject;
     public BallController ball;
     public float speed;
-    private float min, rotationDirection, angle;
-    public float randomNumber;
-    private Vector3 goalTarget, target;
+    private float min, rotationDirection, angle, randomNumber;
+    private Vector3 goalTarget, goalTargetHardOne, goalTargetHardTwo, target;
     private RaycastHit2D hit;
     [SerializeField] private LayerMask mask;
-    [SerializeField] private float distanceToPlayer;
+    public static float distanceToPlayer;
     private List<GameObject> enemiesToPass;
     private Dictionary<GameObject, float> distanceBallEnemy = new Dictionary<GameObject, float>();
     private Dictionary<GameObject, float> distanceOwnerPlayer = new Dictionary<GameObject, float>();
     private Dictionary<GameObject, Vector2> directions = new Dictionary<GameObject, Vector2>();
-    private GameObject closerToBallEnemy, closerToOwnerPlayer;
+    private GameObject closerToOwnerPlayer;
+    public GameObject  closerToBallEnemy;
 
-    public int passRandom, movingRandom;
-    [SerializeField] private float movingLimit, hitLimit;
+    private int movingRandom, rotationRandom;
+    public static int passRandom;
+    private float movingLimit, hitLimit;
 
     void Start()
     {
-        goalTarget = new Vector3(7.9f, 0, -2);
+        goalTarget = new Vector3(7.3f, 0, -2);
+        goalTargetHardOne = new Vector3(7.3f, 0.9f, -2);
+        goalTargetHardTwo = new Vector3(7.3f, -0.9f, -2);
         enemiesToPass = new List<GameObject>();
-        rotationDirection = 1;
+        movingRandom = 70;
+        rotationRandom = 200;
+        movingLimit = 4;
+        hitLimit = 3;     
+        
+        if (Difficulty.level == Difficulty.Difficulties.Easy)
+        {
+            distanceToPlayer = 3;
+            passRandom = 150;
+        }
 
         for (int i = 1; i < 5; i++)
         {
@@ -60,8 +72,21 @@ public class EnemyManager : MonoBehaviour
             {
                 if (enemy.transform.position.x > hitLimit)
                 {
-                    hit = Physics2D.Linecast(enemy.transform.position, goalTarget, mask);
-                    if (hit.collider == null) MoveTheBall(goalTarget, enemy);
+                    if (Difficulty.level == Difficulty.Difficulties.Hard)
+                    {
+                        hit = Physics2D.Linecast(enemy.transform.position, goalTargetHardOne, mask);
+                        if (hit.collider == null) MoveTheBall(goalTargetHardOne, enemy);
+                        else
+                        {
+                            hit = Physics2D.Linecast(enemy.transform.position, goalTargetHardTwo, mask);
+                            if (hit.collider == null) MoveTheBall(goalTargetHardTwo, enemy);
+                        }
+                    }
+                    else
+                    {
+                        hit = Physics2D.Linecast(enemy.transform.position, goalTarget, mask);
+                        if (hit.collider == null) MoveTheBall(goalTarget, enemy);
+                    }
                 }
 
                 GetCloserToOwnerPlayer(enemy);
@@ -141,7 +166,7 @@ public class EnemyManager : MonoBehaviour
 
     private void MoveCircleTrajectory(GameObject enemy)
     {
-        randomNumber = Random.Range(0, movingRandom);
+        randomNumber = Random.Range(0, rotationRandom);
         if (randomNumber == 0)
         {
             randomNumber = Random.Range(0, 2);
@@ -196,16 +221,29 @@ public class EnemyManager : MonoBehaviour
     {
         target = ball.transform.position;
         target.z = -1;
-
         closerToBallEnemy.transform.position = Vector3.MoveTowards(closerToBallEnemy.transform.position, target, speed * Time.fixedDeltaTime);
+
 
         for (int i = 0; i < enemyObject.Length; i++)
         {
             if (enemyObject[i] != closerToBallEnemy)
             {
-                target = playerObject[i].transform.position;
-                target.x -= distanceToPlayer;
-                enemyObject[i].transform.position = Vector3.MoveTowards(enemyObject[i].transform.position, target, speed * Time.fixedDeltaTime);
+                if (Difficulty.level == Difficulty.Difficulties.Easy)
+                {
+                    if (Vector3.Distance(enemyObject[i].transform.position, playerObject[i].transform.position) > distanceToPlayer)
+                    {
+                        target = (enemyObject[i].transform.position - playerObject[i].transform.position).normalized * 3;
+                        target += playerObject[i].transform.position;
+                        target.z = -1;
+                        enemyObject[i].transform.position = Vector3.MoveTowards(enemyObject[i].transform.position, target, speed * Time.fixedDeltaTime);
+                    }
+                }
+                else
+                {
+                    target = playerObject[i].transform.position;
+                    target.x -= distanceToPlayer;
+                    enemyObject[i].transform.position = Vector3.MoveTowards(enemyObject[i].transform.position, target, speed * Time.fixedDeltaTime);
+                }
             }
         }
     }

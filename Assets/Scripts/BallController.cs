@@ -20,7 +20,7 @@ public class BallController : MonoBehaviour
     public bool possession;
     public GameObject blueGameObject, redGameObject;
     private TextMeshProUGUI blueText, redText;
-    private static int blueScore = 0, redScore = 0;
+    public static int blueScore = 0, redScore = 0;
     private bool goal;
 
     [SerializeField]
@@ -50,7 +50,6 @@ public class BallController : MonoBehaviour
             blueText.text = blueScore.ToString();
             goal = true;
         }
-
         else if (transform.position.x > 7.26 && !goal)
         {
             Invoke("RestartScene", 2);

@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     private BallController ball;
     public GameObject bumpCollision;
 
+
     void Start()
     {
         ball = GameObject.Find("Ball").GetComponent<BallController>();
@@ -29,4 +30,5 @@ public class Enemy : MonoBehaviour
         if (ball.owner.CompareTag("Blue")) ball.possession = true;
         else ball.possession = false;
     }
+
 }
