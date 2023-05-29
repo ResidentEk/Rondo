@@ -8,13 +8,13 @@ public class Manager : MonoBehaviour
     private Vector3 fingerPos;
     private RaycastHit2D hit;
 
-    
+
     void Start()
     {
         ball = GameObject.Find("Ball").GetComponent<BallController>();
     }
 
-    
+
     void Update()
     {
         if (Input.touchCount > 0)
@@ -24,7 +24,7 @@ public class Manager : MonoBehaviour
                 if (tap.phase == TouchPhase.Began)
                 {
                     RaycastShoot(tap);
-                    
+
                     if (hit.collider != null && hit.collider.CompareTag("Blue"))
                     {
                         hit.transform.gameObject.GetComponent<PlayerController>().finger = tap.fingerId;
@@ -32,10 +32,13 @@ public class Manager : MonoBehaviour
                         if (ball.owner != null) ball.passOrMove = true;
                     }
 
-                    if (ball.owner != null && !ball.trajectory && ball.owner.CompareTag("Blue"))
+                    if (ball.owner != null && ball.owner.CompareTag("Blue") && !ball.trajectory)
                     {
-                        ball.finger = tap.fingerId;
-                        ball.trajectory = true;
+                        if (hit.collider == null || !hit.collider.CompareTag("Button"))
+                        {
+                            ball.finger = tap.fingerId;
+                            ball.trajectory = true;
+                        }                 
                     }
                 }
             }
