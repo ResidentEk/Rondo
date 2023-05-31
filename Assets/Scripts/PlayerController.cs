@@ -83,19 +83,16 @@ public class PlayerController : MonoBehaviour
 
     private void FingerPhaseEnded()
     {
-        if (Input.touchCount > 0 && Input.GetTouch(indexOfFinger).phase == TouchPhase.Ended)
+        if (Input.GetTouch(indexOfFinger).phase == TouchPhase.Ended)
         {
             hit = Physics2D.Raycast(fingerPos, Vector3.forward);
 
             if (hit.collider != null && hit.collider.gameObject != this.gameObject || hit.collider == null)
             {
-                move = true;
-                if (outOfBounds)
-                {
-                    target = hitPoint;
-                    outOfBounds = false;
-                }
+                if (outOfBounds) target = hitPoint;
                 else target = Camera.main.ScreenToWorldPoint(Input.GetTouch(indexOfFinger).position);
+
+                move = true;
                 target.z = -1;
             }
 
@@ -112,7 +109,7 @@ public class PlayerController : MonoBehaviour
             {
                 fingerPos = Camera.main.ScreenToWorldPoint(Input.touches[i].position);
                 indexOfFinger = i;
-                i = Input.touchCount;
+                return;
             }
         }
     }
@@ -125,7 +122,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (ball.owner == this.gameObject && collision.gameObject.name != "Border" && collision.gameObject.tag != this.gameObject.tag)
+        if (ball.owner == this.gameObject && collision.gameObject.CompareTag("Red"))
         {
             bumpCollision = collision.gameObject;
             StartCoroutine(TakeDealy());
@@ -139,6 +136,8 @@ public class PlayerController : MonoBehaviour
 
         if (ball.owner.CompareTag("Blue")) ball.possession = true;
         else ball.possession = false;
+        ball.trajectory = false;
+        ball.line.enabled = false;
     }
 }
 

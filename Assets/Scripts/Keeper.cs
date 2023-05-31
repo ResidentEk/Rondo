@@ -30,6 +30,7 @@ public class Keeper : MonoBehaviour
             {
                 if (ball.transform.position.y > 0.8f) target.y = 0.8f;
                 else if (ball.transform.position.y < -0.8f) target.y = -0.8f;
+                else target.y = ball.transform.position.y;
             }
             transform.position = Vector3.MoveTowards(transform.position, target, enemyScript.speed * Time.fixedDeltaTime);
         }

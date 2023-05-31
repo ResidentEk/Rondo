@@ -9,7 +9,7 @@ public class BallController : MonoBehaviour
 {
     public GameObject owner;
     public Collider2D col;
-    private LineRenderer line;
+    public LineRenderer line;
     public int finger, indexOfFinger;
     public bool trajectory, passOrMove;
     public Vector3 target, fingerPos;
@@ -41,26 +41,8 @@ public class BallController : MonoBehaviour
 
     void Update()
     {
-
-        if (transform.position.x < -7.9f && !goal)
-        {
-            Invoke("RestartScene", 2);
-            blueScore = int.Parse(blueText.text);
-            blueScore++;
-            blueText.text = blueScore.ToString();
-            goal = true;
-        }
-        else if (transform.position.x > 7.26 && !goal)
-        {
-            Invoke("RestartScene", 2);
-            redScore = int.Parse(redText.text);
-            redScore++;
-            redText.text = redScore.ToString();
-            goal = true;
-        }
-
-
-
+        CheckIfGoal();
+       
         if (owner != null)
         {
             transform.position = new Vector3(owner.transform.position.x, owner.transform.position.y, transform.position.z);
@@ -83,12 +65,31 @@ public class BallController : MonoBehaviour
                     DrawLine(fingerPos);
                     outOfBounds = false;
                 }
-            }
 
-            if (passOrMove && Input.touchCount > 0) DefinePassOrMove();
+                if (passOrMove && Input.touchCount > 0) DefinePassOrMove();
+            }           
         }
+        else if (move) DrawLine(target);
+    }
 
-        if (move) DrawLine(target);
+    private void CheckIfGoal()
+    {
+        if (transform.position.x < -7.9f && !goal)
+        {
+            Invoke("RestartScene", 2);
+            blueScore = int.Parse(blueText.text);
+            blueScore++;
+            blueText.text = blueScore.ToString();
+            goal = true;
+        }
+        else if (transform.position.x > 7.26 && !goal)
+        {
+            Invoke("RestartScene", 2);
+            redScore = int.Parse(redText.text);
+            redScore++;
+            redText.text = redScore.ToString();
+            goal = true;
+        }
     }
 
     private void RestartScene()
@@ -104,7 +105,7 @@ public class BallController : MonoBehaviour
             {
                 fingerPos = Camera.main.ScreenToWorldPoint(Input.touches[i].position);
                 indexOfFinger = i;
-                i = Input.touchCount;
+                return;
             }
         }
     }
@@ -184,4 +185,6 @@ public class BallController : MonoBehaviour
             lastOwner = null;
         }
     }
+
+
 }

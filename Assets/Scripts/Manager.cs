@@ -7,17 +7,26 @@ public class Manager : MonoBehaviour
     private BallController ball;
     private Vector3 fingerPos;
     private RaycastHit2D hit;
-
+    private Dictionary<GameObject, PlayerController> playerScript = new Dictionary<GameObject, PlayerController>();
+    private Transform players;
+    public GameObject pauseMenu;
 
     void Start()
     {
         ball = GameObject.Find("Ball").GetComponent<BallController>();
+        players = GameObject.Find("Blue team").transform;
+
+        for (int i = 0; i < 5; i++)
+        {
+            playerScript.Add(players.GetChild(i).gameObject, players.GetChild(i).GetComponent<PlayerController>());
+        }
+
     }
 
 
     void Update()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && !pauseMenu.activeSelf)
         {
             foreach (Touch tap in Input.touches)
             {
@@ -27,8 +36,8 @@ public class Manager : MonoBehaviour
 
                     if (hit.collider != null && hit.collider.CompareTag("Blue"))
                     {
-                        hit.transform.gameObject.GetComponent<PlayerController>().finger = tap.fingerId;
-                        hit.transform.gameObject.GetComponent<PlayerController>().pokeOnCollider = true;
+                        playerScript[hit.collider.gameObject].finger = tap.fingerId;
+                        playerScript[hit.collider.gameObject].pokeOnCollider = true;
                         if (ball.owner != null) ball.passOrMove = true;
                     }
 
@@ -38,7 +47,7 @@ public class Manager : MonoBehaviour
                         {
                             ball.finger = tap.fingerId;
                             ball.trajectory = true;
-                        }                 
+                        }
                     }
                 }
             }
