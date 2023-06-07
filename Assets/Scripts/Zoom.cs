@@ -8,7 +8,7 @@ public class Zoom : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        float orthoSize = field.bounds.size.x * Screen.height / Screen.width * 0.5f;
+        float orthoSize = field.bounds.size.x * Screen.height / Screen.safeArea.width * 0.5f;
         Camera.main.orthographicSize = orthoSize;
     }
 

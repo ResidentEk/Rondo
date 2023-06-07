@@ -16,7 +16,7 @@ public class Manager : MonoBehaviour
         ball = GameObject.Find("Ball").GetComponent<BallController>();
         players = GameObject.Find("Blue team").transform;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < players.childCount; i++)
         {
             playerScript.Add(players.GetChild(i).gameObject, players.GetChild(i).GetComponent<PlayerController>());
         }

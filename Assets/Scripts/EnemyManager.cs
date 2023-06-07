@@ -20,6 +20,7 @@ public class EnemyManager : MonoBehaviour
     private Dictionary<GameObject, Vector2> directions = new Dictionary<GameObject, Vector2>();
     private GameObject closerToOwnerPlayer;
     public GameObject  closerToBallEnemy;
+    private Transform enemies, players;
 
     private int movingRandom, rotationRandom;
     public static int passRandom;
@@ -34,23 +35,25 @@ public class EnemyManager : MonoBehaviour
         movingRandom = 70;
         rotationRandom = 200;
         movingLimit = 4;
-        hitLimit = 3;     
-        
+        hitLimit = 3;
+        enemies = GameObject.Find("Red team").transform;
+        players = GameObject.Find("Blue team").transform;
+
         if (Difficulty.level == Difficulty.Difficulties.Easy)
         {
             distanceToPlayer = 3;
             passRandom = 150;
         }
 
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i < enemies.childCount; i++)
         {
-            distanceBallEnemy.Add(GameObject.Find("Red team").transform.GetChild(i).gameObject, 0);
-            directions.Add(GameObject.Find("Red team").transform.GetChild(i).gameObject, new Vector2(0, 0));
+            distanceBallEnemy.Add(enemies.transform.GetChild(i).gameObject, 0);
+            directions.Add(enemies.transform.GetChild(i).gameObject, new Vector2(0, 0));
         }
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < players.childCount; i++)
         {
-            distanceOwnerPlayer.Add(GameObject.Find("Blue team").transform.GetChild(i).gameObject, 0);
+            distanceOwnerPlayer.Add(players.transform.GetChild(i).gameObject, 0);
         }
     }
 
