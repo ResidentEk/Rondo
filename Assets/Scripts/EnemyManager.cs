@@ -187,8 +187,6 @@ public class EnemyManager : MonoBehaviour
 
     public void MoveTheBall(Vector3 aim, GameObject lastOwner)
     {
-        ball.lastOwner = lastOwner;
-        ball.col.enabled = true;
         ball.owner = null;
         ball.move = true;
         ball.trajectory = false;

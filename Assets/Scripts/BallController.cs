@@ -8,13 +8,11 @@ using TMPro;
 public class BallController : MonoBehaviour
 {
     public GameObject owner;
-    public Collider2D col;
     public LineRenderer line;
     public int finger, indexOfFinger;
     public bool trajectory, passOrMove;
     public Vector3 target, fingerPos;
     public bool move, outOfBounds;
-    public GameObject lastOwner;
     private RaycastHit2D hit;
     private Vector2 hitPoint;
     public bool possession;
@@ -22,6 +20,7 @@ public class BallController : MonoBehaviour
     private TextMeshProUGUI blueText, redText;
     public static int blueScore = 0, redScore = 0;
     private bool goal;
+    private static Vector3 startingPosition = new Vector3(6f, 0, -2);
 
     [SerializeField]
     float speed;
@@ -30,13 +29,13 @@ public class BallController : MonoBehaviour
 
     void Start()
     {
-        col = GetComponent<Collider2D>();
         line = GetComponent<LineRenderer>();
         possession = true;
         blueText = blueGameObject.GetComponent<TextMeshProUGUI>();
         redText = redGameObject.GetComponent<TextMeshProUGUI>();
         blueText.text = blueScore.ToString();
         redText.text = redScore.ToString();
+        transform.position = startingPosition;
     }
 
     void Update()
@@ -77,6 +76,7 @@ public class BallController : MonoBehaviour
         if (transform.position.x < -7.9f && !goal)
         {
             Invoke("RestartScene", 2);
+            startingPosition = new Vector3(-6.78f, 0, -2);
             blueScore = int.Parse(blueText.text);
             blueScore++;
             blueText.text = blueScore.ToString();
@@ -85,6 +85,7 @@ public class BallController : MonoBehaviour
         else if (transform.position.x > 7.26 && !goal)
         {
             Invoke("RestartScene", 2);
+            startingPosition = new Vector3(6f, 0, -2);
             redScore = int.Parse(redText.text);
             redScore++;
             redText.text = redScore.ToString();
@@ -94,7 +95,7 @@ public class BallController : MonoBehaviour
 
     private void RestartScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);        
     }
 
     private void DefineFinger()
@@ -118,8 +119,6 @@ public class BallController : MonoBehaviour
 
     private void TouchEnded()
     {
-        lastOwner = owner;
-        col.enabled = true;
         owner = null;
         move = true;
         trajectory = false;
@@ -166,26 +165,12 @@ public class BallController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject != lastOwner)
-        {
-            col.enabled = false;
-            owner = collision.gameObject;
-            line.enabled = false;
-            move = false;
-            passOrMove = false;
+        owner = collision.gameObject;
+        line.enabled = false;
+        move = false;
+        passOrMove = false;
 
-            if (collision.gameObject.CompareTag("Blue")) possession = true;
-            else possession = false;
-        }
+        if (collision.gameObject.CompareTag("Blue")) possession = true;
+        else possession = false;
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject == lastOwner)
-        {
-            lastOwner = null;
-        }
-    }
-
-
 }

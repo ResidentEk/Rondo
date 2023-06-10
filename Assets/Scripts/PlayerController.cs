@@ -132,6 +132,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator TakeDealy()
     {
         yield return null;
+        ball.transform.position = new Vector3(bumpCollision.transform.position.x, bumpCollision.transform.position.y, -2);
         ball.owner = bumpCollision;
         ball.possession = false;
         ball.trajectory = false;
