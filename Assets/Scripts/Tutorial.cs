@@ -10,23 +10,24 @@ public class Tutorial : MonoBehaviour
     public TextMeshProUGUI dialogueBox;
     private int step;
 
-    // Start is called before the first frame update
+    
     void Start()
     {
         ball = GameObject.Find("Ball").GetComponent<BallController>();
         step = 1;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
+
         switch (step)
         {
             case 1:
                 if (ball.owner == blue)
                 {
                     dialogueBox.text = "Отлично! Вы завладели мячом!";
-                    Invoke("TakeAway", 3);
+                    Invoke("TakeAway", 2);
                 }
                 break;
 
@@ -53,6 +54,7 @@ public class Tutorial : MonoBehaviour
     private void MoveTheBall()
     {
         blue2.SetActive(true);
+        step = 3;
     }
 
 

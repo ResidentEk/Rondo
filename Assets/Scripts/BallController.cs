@@ -42,7 +42,7 @@ public class BallController : MonoBehaviour
     void Update()
     {
         CheckIfGoal();
-       
+
         if (owner != null)
         {
             transform.position = new Vector3(owner.transform.position.x, owner.transform.position.y, transform.position.z);
@@ -67,7 +67,7 @@ public class BallController : MonoBehaviour
                 }
 
                 if (passOrMove && Input.touchCount > 0) DefinePassOrMove();
-            }           
+            }
         }
         else if (move) DrawLine(target);
     }
@@ -172,6 +172,7 @@ public class BallController : MonoBehaviour
             owner = collision.gameObject;
             line.enabled = false;
             move = false;
+            passOrMove = false;
 
             if (collision.gameObject.CompareTag("Blue")) possession = true;
             else possession = false;

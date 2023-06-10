@@ -19,7 +19,7 @@ public class EnemyManager : MonoBehaviour
     private Dictionary<GameObject, float> distanceOwnerPlayer = new Dictionary<GameObject, float>();
     private Dictionary<GameObject, Vector2> directions = new Dictionary<GameObject, Vector2>();
     private GameObject closerToOwnerPlayer;
-    public GameObject  closerToBallEnemy;
+    public GameObject closerToBallEnemy;
     private Transform enemies, players;
 
     private int movingRandom, rotationRandom;
@@ -92,9 +92,12 @@ public class EnemyManager : MonoBehaviour
                     }
                 }
 
-                GetCloserToOwnerPlayer(enemy);
-                DecideIfOwnerNearPlayer(enemy);
-                DecideWhenToPass(enemy);
+                if (ball.owner != null)
+                {
+                    GetCloserToOwnerPlayer(enemy);
+                    DecideIfOwnerNearPlayer(enemy);
+                    DecideWhenToPass(enemy);
+                }
             }
         }
     }
