@@ -581,6 +581,8 @@ MonoBehaviour:
   pokeOnCollider: 0
   secondLineObject: {fileID: 1394029552}
   bumpCollision: {fileID: 0}
+  solidLine: {fileID: 2800000, guid: ce3b431622e2e2f40805b7d7fc7d1665, type: 3}
+  dashedLine: {fileID: 2800000, guid: 6ece4e0aa438c8341a3b827acc01157e, type: 3}
   speed: 0.5
   mask:
     serializedVersion: 2
@@ -609,7 +611,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -683,9 +685,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!1 &541074778
@@ -1179,6 +1181,8 @@ MonoBehaviour:
   pokeOnCollider: 0
   secondLineObject: {fileID: 730167452}
   bumpCollision: {fileID: 0}
+  solidLine: {fileID: 2800000, guid: ce3b431622e2e2f40805b7d7fc7d1665, type: 3}
+  dashedLine: {fileID: 2800000, guid: 6ece4e0aa438c8341a3b827acc01157e, type: 3}
   speed: 0.5
   mask:
     serializedVersion: 2
@@ -1207,7 +1211,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1281,9 +1285,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!1 &730167452
@@ -1336,7 +1340,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1410,9 +1414,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!114 &730167455
@@ -1473,6 +1477,8 @@ MonoBehaviour:
   possession: 0
   blueGameObject: {fileID: 1527726523}
   redGameObject: {fileID: 559367566}
+  solidLine: {fileID: 2800000, guid: a50fb8ebafd4bc94e8857af384283564, type: 3}
+  dashedLine: {fileID: 2800000, guid: 68670a2536505a444b5a18eb22d07429, type: 3}
   speed: 3
   mask:
     serializedVersion: 2
@@ -1575,7 +1581,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 201ad1414c1c57a41927674e8692be45, type: 2}
+  - {fileID: 2100000, guid: 55c38745bd9621641a2199458f88daa7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1649,7 +1655,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
     generateLightingData: 1
   m_UseWorldSpace: 1
@@ -2516,7 +2522,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2590,9 +2596,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!114 &1229390578
@@ -2860,6 +2866,8 @@ MonoBehaviour:
   pokeOnCollider: 0
   secondLineObject: {fileID: 1845649914}
   bumpCollision: {fileID: 0}
+  solidLine: {fileID: 2800000, guid: ce3b431622e2e2f40805b7d7fc7d1665, type: 3}
+  dashedLine: {fileID: 2800000, guid: 6ece4e0aa438c8341a3b827acc01157e, type: 3}
   speed: 0.5
   mask:
     serializedVersion: 2
@@ -2888,7 +2896,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2962,9 +2970,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!1 &1394029552
@@ -3017,7 +3025,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3091,9 +3099,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!114 &1394029555
@@ -3240,7 +3248,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3314,9 +3322,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!114 &1463850874
@@ -3684,6 +3692,8 @@ MonoBehaviour:
   pokeOnCollider: 0
   secondLineObject: {fileID: 1229390575}
   bumpCollision: {fileID: 0}
+  solidLine: {fileID: 2800000, guid: ce3b431622e2e2f40805b7d7fc7d1665, type: 3}
+  dashedLine: {fileID: 2800000, guid: 6ece4e0aa438c8341a3b827acc01157e, type: 3}
   speed: 0.5
   mask:
     serializedVersion: 2
@@ -3712,7 +3722,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3786,9 +3796,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!1001 &1826325479
@@ -3992,7 +4002,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4066,9 +4076,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!114 &1845649917
@@ -4606,6 +4616,8 @@ MonoBehaviour:
   pokeOnCollider: 0
   secondLineObject: {fileID: 1463850871}
   bumpCollision: {fileID: 0}
+  solidLine: {fileID: 2800000, guid: ce3b431622e2e2f40805b7d7fc7d1665, type: 3}
+  dashedLine: {fileID: 2800000, guid: 6ece4e0aa438c8341a3b827acc01157e, type: 3}
   speed: 0.5
   mask:
     serializedVersion: 2
@@ -4634,7 +4646,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7753933189b333d4dbbaf8f214c11e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4708,9 +4720,9 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!1 &2019356097

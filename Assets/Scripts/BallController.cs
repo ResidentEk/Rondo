@@ -21,6 +21,7 @@ public class BallController : MonoBehaviour
     public static int blueScore = 0, redScore = 0;
     private bool goal;
     private static Vector3 startingPosition = new Vector3(6f, 0, -2);
+    public Texture2D solidLine, dashedLine;
 
     [SerializeField]
     float speed;
@@ -53,6 +54,7 @@ public class BallController : MonoBehaviour
                 if (Input.GetTouch(indexOfFinger).phase == TouchPhase.Ended) TouchEnded();
 
                 hit = Physics2D.Linecast(transform.position, fingerPos, mask);
+                line.material.SetTexture("_MainTex", dashedLine);
                 if (hit.collider != null)
                 {
                     outOfBounds = true;
@@ -60,7 +62,7 @@ public class BallController : MonoBehaviour
                     hitPoint = hit.point;
                 }
                 else
-                {
+                {                   
                     DrawLine(fingerPos);
                     outOfBounds = false;
                 }
@@ -68,7 +70,12 @@ public class BallController : MonoBehaviour
                 if (passOrMove && Input.touchCount > 0) DefinePassOrMove();
             }
         }
-        else if (move) DrawLine(target);
+        else if (move)
+        {
+            line.material.SetTexture("_MainTex", solidLine);
+            DrawLine(target);
+        }
+
     }
 
     private void CheckIfGoal()
@@ -95,7 +102,7 @@ public class BallController : MonoBehaviour
 
     private void RestartScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void DefineFinger()

@@ -10,14 +10,15 @@ public class Tutorial : MonoBehaviour
     public TextMeshProUGUI dialogueBox;
     private int step;
 
-    
+
     void Start()
     {
         ball = GameObject.Find("Ball").GetComponent<BallController>();
+        ball.transform.position = new Vector3(-2.2f, 1.65f, -2);
         step = 1;
     }
 
-    
+
     void Update()
     {
 

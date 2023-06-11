@@ -236,8 +236,7 @@ public class EnemyManager : MonoBehaviour
                 {
                     if (Vector3.Distance(enemyObject[i].transform.position, playerObject[i].transform.position) > distanceToPlayer)
                     {
-                        target = (enemyObject[i].transform.position - playerObject[i].transform.position).normalized * 3;
-                        target += playerObject[i].transform.position;
+                        target = (enemyObject[i].transform.position - playerObject[i].transform.position).normalized * 3;                        target += playerObject[i].transform.position;
                         target.z = -1;
                         enemyObject[i].transform.position = Vector3.MoveTowards(enemyObject[i].transform.position, target, speed * Time.fixedDeltaTime);
                     }

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private int indexOfFinger;
     private RaycastHit2D hit;
     private Vector2 hitPoint;
+    public Texture2D solidLine, dashedLine;
 
     [SerializeField]
     private float speed;
@@ -45,7 +46,12 @@ public class PlayerController : MonoBehaviour
             FingerPhaseEnded();
         }
 
-        if (move) DrawLine(target, line);
+        if (move)
+        {
+            line.material.SetTexture("_MainTex", solidLine);
+            DrawLine(target, line);
+        }
+                      
     }
 
 
@@ -67,6 +73,7 @@ public class PlayerController : MonoBehaviour
     private void LinecastShoot(LineRenderer segment)
     {
         hit = Physics2D.Linecast(transform.position, fingerPos, mask);
+        line.material.SetTexture("_MainTex", dashedLine);
         if (hit.collider != null)
         {
             DrawLine(hit.point, segment);
